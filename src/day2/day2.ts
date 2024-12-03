@@ -7,25 +7,18 @@ const input = readFileSync(__dirname + '/input.txt', 'utf-8')
 
 const part1 = () => {
   let count = 0;
-
   input.forEach((row) => {
-    let dirr: undefined | 'increase' | 'decrease' = undefined;
+    let d: undefined | 'inc' | 'dec';
+
     for (let i = 1; i <= row.length; i++) {
-      if (i === 1) {
-        dirr = row[i] > row[i - 1] ? 'increase' : 'decrease';
-      }
+      const n1 = row[i],
+        n2 = row[i - 1];
 
-      if (
-        dirr != undefined &&
-        (Math.abs(row[i] - row[i - 1]) > 3 ||
-          (dirr === 'increase' ? row[i] <= row[i - 1] : row[i] >= row[i - 1]))
-      ) {
-        break;
-      }
+      if (i === 1) d = n1 > n2 ? 'inc' : 'dec';
 
-      if (i === row.length) {
-        count++;
-      }
+      if (Math.abs(n1 - n2) > 3 || (d === 'inc' ? n1 <= n2 : n1 >= n2)) break;
+
+      if (i === row.length) count++;
     }
   });
   console.log('Part 1: ' + count);
@@ -33,30 +26,21 @@ const part1 = () => {
 
 const part2 = () => {
   let count = 0;
-
   input.forEach((row) => {
-    let dirr: undefined | 'increase' | 'decrease' = undefined;
-    let damped = false;
+    let d: undefined | 'inc' | 'dec',
+      damp = false;
+
     for (let i = 1; i <= row.length; i++) {
-      if (i === 1) {
-        dirr = row[i] > row[i - 1] ? 'increase' : 'decrease';
-      }
+      const n1 = row[i],
+        n2 = row[i - 1];
 
-      if (
-        dirr != undefined &&
-        (Math.abs(row[i] - row[i - 1]) > 3 ||
-          (dirr === 'increase' ? row[i] <= row[i - 1] : row[i] >= row[i - 1]))
-      ) {
-        if (damped) {
-          break;
-        } else {
-          damped = true;
-        }
-      }
+      if (i === 1) d = n1 > n2 ? 'inc' : 'dec';
 
-      if (i === row.length) {
-        count++;
-      }
+      if (Math.abs(n1 - n2) > 3 || (d === 'inc' ? n1 <= n2 : n1 >= n2))
+        if (damp) break;
+        else damp = true;
+
+      if (i === row.length) count++;
     }
   });
   console.log('Part 2: ' + count);
